@@ -36,8 +36,128 @@ ClientThread::~ClientThread()
 *输出参数：none
 *返回值：none
 **************************************************/
+#define DATA_SENDER 1
+#define DATA_GETTER 2
 
 void ClientThread::run()
+{
+    int rlen;
+    int flag;   
+    rlen = recv(conn_fd, (int*)&flag, sizeof(int), 0);
+
+    if (rlen < 0)
+    {
+#ifdef _DEBUG
+            cout << "Receiving data failed!" << endl;
+#endif
+            throw ServerException("Receiving data failed!");
+    }
+
+    if (flag == DATA_SENDER)
+    {
+        getData();
+    }
+    else if (flag == DATA_GETTER)
+    {
+        pushData();
+    }
+}
+
+void ClientThread::readData(list<MatchedLogRec> & matched_log)
+{
+    string matched_log_file ="matched_record.txt";
+    cout<<"Starting to read unsended matched log..."<<endl;
+#ifdef _TEST
+    int num_read=0;
+#endif
+    try
+    {
+        //open the file storing unsended matched log.
+        ifstream fin(unsended_file.c_str(),ifstream::in);
+        if (fin.fail())
+        {
+            throw ReadException("Open file failed");
+        }
+        else
+        {
+#ifdef _DEBUG
+            cout<<"OK:open \"unsended_matched_log\" file."<<endl;
+#endif
+        }
+        //read the matched log and insert into the matched_log list.
+        MatchedLogRec log;
+        while (!fin.eof())
+        {
+            fin>>log;
+            if (fin.fail())
+            {
+                if (!fin.eof())
+                {
+                    throw ReadException("Read unsended log failed");
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+            matched_log.push_back(log);
+#ifdef _TEST
+            ++num_read;
+#endif
+        }
+
+        //close the file.
+        fin.close();
+
+        cout<<"OK:read unsended matched log finished."<<endl;
+
+#ifdef _TEST
+        cout<<"Number of matched log read:"<<num_read<<endl;
+#endif
+    } catch (ClientException & e)
+    {
+        cout<<e.what()<<endl;
+        exit(-1);
+    }
+}
+void ClientThread::pushData(list<MatchedLogRec> & matched_log)
+{
+    int num_send_log=0;
+    try
+    {
+        cout<<"Starting to send data to server..."<<endl;
+        int send_num;
+        for (list<MatchedLogRec>::iterator it=matched_log.begin();it!=matched_log.end();)
+        {
+#ifdef _DEBUG
+            sleep(1);
+#endif
+            send_num=send(socket_fd,(void *)&(*it),sizeof(MatchedLogRec),0);
+            if (send_num<0)
+            {
+                throw SendException("Send data to server failed");
+            }
+            else
+            {
+#ifdef _DEBUG
+                cout<<*it<<endl;
+                cout<<"OK:client socket sended."<<endl;
+#endif
+                ++num_send_log;
+                it=matched_log.erase(it);
+            }
+        }
+        cout<<"OK:send data to server finished."<<endl;
+        cout<<"Total number of sended matched log: "<<num_send_log<<endl;
+    } catch (ClientException & e)
+    {
+        cout<<e.what()<<endl;
+        cout<<"Total number of sended matched log: "<<num_send_log<<endl;
+    }
+}
+
+void ClientThread::getData()
 {
     int rlen;
     MatchedLogRec buf;

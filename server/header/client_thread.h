@@ -10,6 +10,8 @@ public:
     ClientThread(int conn_fd);
     ~ClientThread();
     void run();
+    void pushData();
+    void getData();
 };
 
 #endif // CLIENT_THREAD_H

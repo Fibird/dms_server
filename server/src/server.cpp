@@ -5,7 +5,7 @@
 
 #include "header/server.h"
 #include "header/file_dao.h"
-#include "header/oracle_dao.h"
+#include "header/file_dao.h"
 #include "header/server_exception.h"
 
 //#define _DEBUG
@@ -104,13 +104,13 @@ Server::~Server()
 **************************************************/
 void Server::dataMine()
 {
-    OracleDao oracle_dao;
-    cout << "Starting Oracle Dao thread..." << endl;
-    store_thread = new StoreThread(oracle_dao);
+    FileDao file_dao;
+    cout << "Starting File Dao thread..." << endl;
+    store_thread = new StoreThread(file_dao);
 
     // start store thread
     store_thread->start();
-    cout << "OK:oracle dao thread has started." << endl;
+    cout << "OK:file dao thread has started." << endl;
     try
     {
         // start to accept data from clients
