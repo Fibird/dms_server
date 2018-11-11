@@ -1,8 +1,8 @@
 #include <iostream>
 #include <pthread.h>
 
-#include "header/base_thread.h"
-#include "header/thread_exception.h"
+#include "include/base_thread.h"
+#include "include/thread_exception.h"
 
 using std::cout;
 using std::endl;

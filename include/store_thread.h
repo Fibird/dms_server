@@ -1,7 +1,7 @@
 #ifndef STORE_THREAD_H
 #define STORE_THREAD_H
-#include "header/log_dao.h"
-#include "header/base_thread.h"
+#include "include/log_dao.h"
+#include "include/base_thread.h"
 
 class StoreThread : public BaseThread
 {

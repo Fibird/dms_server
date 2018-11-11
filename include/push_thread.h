@@ -1,7 +1,7 @@
 #ifndef PUSH_THREAD_H
 #define PUSH_THREAD_H
-#include "header/log_dao.h"
-#include "header/base_thread.h"
+#include "include/log_dao.h"
+#include "include/base_thread.h"
 
 class PushThread : public BaseThread
 {

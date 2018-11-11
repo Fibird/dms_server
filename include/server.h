@@ -1,7 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
-#include "header/server_socket.h"
-#include "header/store_thread.h"
+#include "include/server_socket.h"
+#include "include/store_thread.h"
 
 class Server
 {

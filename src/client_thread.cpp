@@ -1,15 +1,15 @@
-#include "header/client_thread.h"
-#include "header/data.h"
+#include "include/client_thread.h"
+#include "include/data.h"
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <stdio.h>
-#include <header/log_queue.h>
+#include <include/log_queue.h>
 #include <iostream>
 #include <cstring>
-#include <header/data.h>
+#include <include/data.h>
 #include <cstdlib>
-#include "header/server_exception.h"
+#include "include/server_exception.h"
 
 //#define _DEBUG
 

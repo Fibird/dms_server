@@ -145,10 +145,10 @@ static const short sqlcud0[] =
 
 
 #include<iostream>
-#include"header/oracle_dao.h"
+#include"include/oracle_dao.h"
 #include<cstdlib>
 #include<cstring>
-#include"header/db_exception.h"
+#include"include/db_exception.h"
 #include<ctime>
 using std::cout;
 using std::endl;

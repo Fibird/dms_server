@@ -1,5 +1,5 @@
-#include "header/store_thread.h"
-#include "header/log_queue.h"
+#include "include/store_thread.h"
+#include "include/log_queue.h"
 
 using std::cout;
 using std::endl;

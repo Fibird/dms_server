@@ -7,10 +7,10 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "header/socket_exception.h"
-#include "header/client_thread.h"
-#include "header/server_socket.h"
-#include "header/thread_exception.h"
+#include "include/socket_exception.h"
+#include "include/client_thread.h"
+#include "include/server_socket.h"
+#include "include/thread_exception.h"
 
 using std::cout;
 using std::endl;

@@ -22,8 +22,8 @@
 #include <iostream>
 #include <cstdlib>
 
-#include "header/log_queue.h"
-#include "header/server.h"
+#include "include/log_queue.h"
+#include "include/server.h"
 
 using std::cout;
 using std::endl;
