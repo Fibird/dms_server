@@ -10,6 +10,7 @@
 #include <include/data.h>
 #include <cstdlib>
 #include "include/server_exception.h"
+#include "include/read_exception.h"
 
 //#define _DEBUG
 
@@ -59,7 +60,9 @@ void ClientThread::run()
     }
     else if (flag == DATA_GETTER)
     {
-        pushData();
+        list<MatchedLogRec> ml;
+        readData(ml);
+        pushData(ml);
     }
 }
 
@@ -73,7 +76,7 @@ void ClientThread::readData(list<MatchedLogRec> & matched_log)
     try
     {
         //open the file storing unsended matched log.
-        ifstream fin(unsended_file.c_str(),ifstream::in);
+        ifstream fin(matched_log_file.c_str(), ifstream::in);
         if (fin.fail())
         {
             throw ReadException("Open file failed");
@@ -81,7 +84,7 @@ void ClientThread::readData(list<MatchedLogRec> & matched_log)
         else
         {
 #ifdef _DEBUG
-            cout<<"OK:open \"unsended_matched_log\" file."<<endl;
+            cout<<"OK:open \"matched_log_file\" file."<<endl;
 #endif
         }
         //read the matched log and insert into the matched_log list.
@@ -115,12 +118,13 @@ void ClientThread::readData(list<MatchedLogRec> & matched_log)
 #ifdef _TEST
         cout<<"Number of matched log read:"<<num_read<<endl;
 #endif
-    } catch (ClientException & e)
+    } catch (ServerException & e)
     {
         cout<<e.what()<<endl;
         exit(-1);
     }
 }
+
 void ClientThread::pushData(list<MatchedLogRec> & matched_log)
 {
     int num_send_log=0;
@@ -133,10 +137,10 @@ void ClientThread::pushData(list<MatchedLogRec> & matched_log)
 #ifdef _DEBUG
             sleep(1);
 #endif
-            send_num=send(socket_fd,(void *)&(*it),sizeof(MatchedLogRec),0);
+            send_num=send(conn_fd,(void *)&(*it),sizeof(MatchedLogRec),0);
             if (send_num<0)
             {
-                throw SendException("Send data to server failed");
+                throw ServerException("Send data to server failed");
             }
             else
             {
@@ -150,7 +154,7 @@ void ClientThread::pushData(list<MatchedLogRec> & matched_log)
         }
         cout<<"OK:send data to server finished."<<endl;
         cout<<"Total number of sended matched log: "<<num_send_log<<endl;
-    } catch (ClientException & e)
+    } catch (ServerException & e)
     {
         cout<<e.what()<<endl;
         cout<<"Total number of sended matched log: "<<num_send_log<<endl;

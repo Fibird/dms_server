@@ -1,6 +1,10 @@
 #ifndef CLIENT_THREAD_H
 #define CLIENT_THREAD_H
 #include "base_thread.h"
+#include <list>
+#include "include/data.h"
+
+using std::list;
 
 class ClientThread : public BaseThread
 {
@@ -10,7 +14,8 @@ public:
     ClientThread(int conn_fd);
     ~ClientThread();
     void run();
-    void pushData();
+    void pushData(list<MatchedLogRec> & matched_log);
+    void readData(list<MatchedLogRec> & matched_log);
     void getData();
 };
 
