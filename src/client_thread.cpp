@@ -12,7 +12,7 @@
 #include "include/server_exception.h"
 #include "include/read_exception.h"
 
-//#define _DEBUG
+#define _DEBUG
 
 using std::cout;
 using std::endl;
@@ -53,13 +53,19 @@ void ClientThread::run()
 #endif
             throw ServerException("Receiving data failed!");
     }
+    else
+    {
+        cout << "come a client!" << endl;
+    }
 
     if (flag == DATA_SENDER)
     {
+        cout << "This is a data miner!" << endl;
         getData();
     }
     else if (flag == DATA_GETTER)
     {
+        cout << "This is a data stastic!" << endl;
         list<MatchedLogRec> ml;
         readData(ml);
         pushData(ml);
