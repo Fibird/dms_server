@@ -6,6 +6,8 @@
 #include <string.h>
 #include <iostream>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <netinet/tcp.h>
 
 #include "include/socket_exception.h"
 #include "include/client_thread.h"
@@ -138,6 +140,14 @@ void ServerSocket::acceptClient()
         }
         else
         {            
+          int keepAlive = 1;
+          setsockopt(socket_fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&keepAlive, sizeof(keepAlive));
+          int keepIdle = 5;
+          int keepInterval = 5;
+          int keepCount = 5;
+          setsockopt(socket_fd, SOL_TCP, TCP_KEEPIDLE, (void *)&keepIdle, sizeof(keepIdle));
+          setsockopt(socket_fd, SOL_TCP,TCP_KEEPINTVL, (void *)&keepInterval, sizeof(keepInterval));
+          setsockopt(socket_fd,SOL_TCP, TCP_KEEPCNT, (void *)&keepCount, sizeof(keepCount));
             //cout << "Connected to a new client." << endl;
             // start a new client thread to deal with the client connecting
             try

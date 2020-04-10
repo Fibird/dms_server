@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include "include/server_exception.h"
 #include "include/read_exception.h"
+#include<errno.h>
 
 #define _DEBUG
 
@@ -192,8 +193,9 @@ void ClientThread::getData()
             //cout << "Disconnected to this client." << endl;
             cout << "Received: " << rcv_count << endl;
 #ifdef _DEBUG
-            cout<<"Error number: "<<error_num<<endl;
+//            cout<<"Error number: "<<error_num<<endl;
 #endif
+            cout << "System Error: " << errno << endl;
             delete this;
         }
         else if (rlen == 80)
@@ -214,6 +216,7 @@ void ClientThread::getData()
             error_num++;
 #endif
 
+            cout << "System Error: " << errno << endl;
             while (true)
             {
                 buf_cur_num += rlen;
@@ -233,6 +236,7 @@ void ClientThread::getData()
                     }
                     else if (rlen < 0)
                     {
+                        cout << "System Error: " << errno << endl;
                         throw ServerException("Receiving data failed!");
                     }
                 }
